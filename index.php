@@ -8,11 +8,14 @@ $users = $connection
     ->query($sql)
     ->fetchAll(PDO::FETCH_ASSOC);
 
+$prodSql = 'SELECT * FROM `product` ORDER BY `id` DESC LIMIT 5';
+$products = $connection->query($prodSql)->fetchAll(PDO::FETCH_ASSOC);
+
 /**
- * @todo Edit user
- * @todo Delete User
  *
- * @todo Pagination
+ * @todo:  Afficher les 5 derniers produits sur la Home (id , name , selling_price)
+ * @todo: pouvoir cliquer sur un produit et envoi vers page de details du produit ( name , cost_price , selling_price, category)
+ *
  */
 ?>
 
@@ -49,5 +52,37 @@ require_once 'template_head.php';
     <?php endforeach; ?>
     </tbody>
 </table>
+
+<hr>
+
+<h3>Last 5 Products</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($products as $product): ?>
+        <tr>
+            <td><?= $product['id'] ?></td>
+            <td><?= $product['name'] ?></td>
+            <td><?= $product['selling_price'] ?></td>
+            <td>
+                <form method="post" action="/detail-product.php?id=<?= $product['id'] ?>">
+                    <button>Details</button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+
 </body>
 </html>
